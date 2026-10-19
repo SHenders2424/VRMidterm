@@ -10,6 +10,8 @@ public class GazeDwellButton : MonoBehaviour
     public LayerMask buttonLayer;
     public Camera gazeCamera;
 
+    public float gazePitchOffset = 10f;
+
     [Header("UI Feedback")]
     public Image radialProgressBar; // Assign a UI Image here (Image Type must be set to Filled)
 
@@ -24,15 +26,26 @@ public class GazeDwellButton : MonoBehaviour
         if (radialProgressBar != null)
         {
             radialProgressBar.fillAmount = 0f;
+
+            Transform barCanvas = radialProgressBar.canvas.transform;
+            if (barCanvas.parent == gazeCamera.transform)
+            {
+                float distance = barCanvas.localPosition.magnitude;
+                Quaternion tilt = Quaternion.Euler(gazePitchOffset, 0f, 0f);
+                barCanvas.localPosition = tilt * Vector3.forward * distance;
+                barCanvas.localRotation = tilt;
+            }
         }
     }
 
     void Update()
     {
         // Create gaze ray
+        Vector3 gazeDirection = gazeCamera.transform.rotation * Quaternion.Euler(gazePitchOffset, 0f, 0f) * Vector3.forward;
+
         Ray ray = new Ray(
             gazeCamera.transform.position,
-            gazeCamera.transform.forward
+            gazeDirection
         );
 
         Debug.DrawRay(ray.origin, ray.direction * gazeDistance, Color.red);
