@@ -1648,11 +1648,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GazeDwellButton
   gazeDistance: 100
-  dwellTime: 3
+  dwellTime: 1
   buttonLayer:
     serializedVersion: 2
     m_Bits: 64
   gazeCamera: {fileID: 1177229481}
+  gazePitchOffset: 10
   radialProgressBar: {fileID: 252926692}
 --- !u!1 &1234581689
 GameObject:
